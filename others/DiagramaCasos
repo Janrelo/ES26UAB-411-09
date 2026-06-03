@@ -1,0 +1,87 @@
+'Params
+  left to right direction
+  skinparam backgroundColor transparent
+  skinparam actorFontSize 16
+  skinparam defaultFontName Courier
+  skinparam linetype polyline
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor lightskyblue
+  skinparam useCaseBackgroundColor application
+
+'Actors
+  actor "Usuari no registrat" as NON
+  actor Usuari as U
+  actor Client as CLI
+  actor Cuiner as CUI
+  actor Repartidor as REP
+
+/'Use cases'/
+'Usuari no registrat
+  usecase "Registrar compte" as UC1
+  usecase "Iniciar sessió" as UC19
+  usecase "Consultar menús" as UC2
+  usecase "Cercar menús" as UC21
+  usecase "Informació menús" as UC23
+'Client
+  usecase "Fer comandes" as UC3
+  usecase "Consultar historial" as UC4
+  usecase "Valorar comanda" as UC6
+  usecase "Suggerir plats" as UC7
+  usecase "Pagar comanda" as UC10
+  usecase "Reservar comanda" as UC16
+  usecase "Canviar recepta" as UC17
+  usecase "Seleccionar plat" as UC18
+  usecase "Seleccionar recollida" as UC22
+  usecase "Veure ubicació" as UC27
+'Usuari
+  usecase "Modificar perfil" as UC5
+  usecase "Eliminar compte" as UC11
+  usecase "Canviar adreça" as UC12
+  usecase "Canviar restriccions" as UC13
+  usecase "Canviar vista" as UC14
+  usecase "Canviar rols" as UC15
+'Cuiner
+  usecase "Acceptar plats" as UC8
+  usecase "Veure propostes" as UC20
+  usecase "Acceptar propostes" as UC26
+'Repartidor
+  usecase "Enviar comanda" as UC9
+  usecase "Compartir ubicació" as UC25
+
+/'Relacions'/
+'Actors
+  U --|> NON
+  CLI --|> U
+  CUI --|> U
+  REP --|> U
+'Usuari no registrat
+  NON --> UC1
+  NON --> UC2
+  NON --> UC19
+  UC2 ..> UC21 : extend
+  UC2 ..> UC23 : extend
+'Client
+  CLI --> UC3
+  CLI --> UC4
+  CLI --> UC6
+  CLI --> UC7
+  UC3 ..> UC10 : include
+  UC18 ..> UC17 : extend
+  CLI --> UC18
+  UC3 ..> UC22 : include
+  UC3 ..> UC16 : extend
+  CLI --> UC27
+'Usuari
+  U --> UC5
+  U --> UC11
+  UC5 ..> UC12 : extend
+  UC5 ..> UC13 : extend
+  UC5 ..> UC14 : extend
+  UC5 ..> UC15 : extend
+'Cuiner
+  CUI --> UC8
+  CUI --> UC20
+  UC20 ..> UC26 : extend
+'Repartidor
+  REP --> UC9
+  UC9 ..> UC25 : include

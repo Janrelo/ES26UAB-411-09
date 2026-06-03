@@ -1,0 +1,182 @@
+left to right direction
+
+class "Usuari no registrat" {
+ +consultarMenús(): void
+ +cercarCuiner(): Cuiner
+ +cercarPlat(): Plat
+ -crearCompte(): void
+ -iniciarSessió(): void
+}
+class Usuari {
+ #String[] perfilUsuari
+ #String correu
+ #Compte compteUsuari
+ +getNom(): String
+ +getAdreça(): String
+ +getCorreu(): String
+ #validarContrasenya(): void
+ #modificarPerfil(): void
+ #esborrarUsuari(): void
+}
+class Cuiner {
+ -String[] perfilCuiner
+ -Valoració[] valoracions
+ -Plat[] plats
+ +getDisponibilitat(): String
+ +getHorari(): String
+ +getÀrea(): String
+ +getValoracions(): Valoració[]
+ +getPlats(): Plat[]
+ +veurePropostes(): void
+ +acceptarProposta(): void
+ +xatejarClients(): void
+}
+class Client {
+ -String[] perfilClient
+ -Comanda[] comandes
+ -Proposta[] propostes
+ +getRestriccions(): String
+ +getVista(): String
+ +ferComanda(): void
+ +seguirComanda(): void
+ +valorarComanda(): void
+ +valorarPlat(): void
+ +valorarCuiner(): void
+ +veureHistorial(): void
+ +proposarPlat(): void
+ -veureUbicació(): void
+ -pagarComanda(): void
+ -modificarPlat(): void
+}
+class Repartidor {
+ -String[] perfilRepartidor
+ -Comanda[] comandes
+ +getDisponibilitat(): String
+ +getHorari(): String
+ +getÀrea(): String
+ -compartirUbicació(): void
+}
+class Comanda {
+ -Plat[] plats
+ -date data
+ -String adreça
+ -String estat
+ -String enviament
+ -int valoració
+ -int codi
+ +getPlats(): Plat[]
+ +getPreu(): float
+ +getData(): date
+ +getAdreça(): String
+ +getEstat(): String
+ +getEnviament(): String
+ +getValoració(): int
+ +getCodi(): int
+ -calcularPreu(): float
+}
+class Plat {
+ -bool esMenú
+ -String nom
+ -Ingredient[] obligatoris
+ -Ingredient[] modificables
+ -float preu
+ -int valoració
+ -int codi
+ +getMenú(): bool
+ +getNom(): String
+ +getIngredients(): Ingredient[]
+ +getModificables(): Ingredient[]
+ +getRestriccions(): Dieta[]
+ +getPreu(): float
+ +getValoració(): int
+ +getCodi(): int
+ -calcularTempsEntrega(): float
+}
+class Compte {
+ -String titular
+ -String tipus
+ -int codi
+ +getTitular(): String
+ +getTipus(): String
+ +getCodi(): int
+ +getEstat(): String
+ +getSaldo(): float
+ +retirar(): void
+ +ingressar(): void
+ -connectarPlataforma(): void
+ -autenticarDades(): void
+}
+class Proposta {
+ -String nom
+ -String descripció
+ -Xat[] xats
+ -int codi
+ +getNom(): String
+ +getDescripció(): String
+ +getCodi(): int
+}
+class Xat {
+ -String[] missatges
+ -String estat
+ -int codi
+ +getMissatges(): String[]
+ +getEstat(): String
+ +getCodi(): int
+}
+class Ingredient {
+ -String nom
+ -Dieta[] restriccions
+ -int codi
+ +getNom(): String
+ +getRestriccions(): Dieta[]
+ +getCodi(): int
+}
+class Dieta {
+ -String nom
+ -int codi
+ +getNom(): String
+ +getCodi(): int
+}
+class Valoració {
+ -String text
+ -int puntuació
+ -int codi
+ +getText(): String
+ +getPuntuació(): int
+ +getCodi(): int
+}
+
+"Usuari no registrat" <|-down- Usuari
+Usuari <|-up- Cuiner
+Usuari <|-- Client
+Usuari <|-- Repartidor
+
+"Usuari no registrat" -right- Plat : cercar plat
+"Usuari no registrat" -- Cuiner : cercar cuiner
+Cuiner "1" *-- "0..*" Plat : ofereix
+Plat "1" -- "2..*" Plat : menú
+Comanda "1..*" o-up- "1..*" Plat : conté
+Client "1" *-left- "0..*" Comanda : realitza
+Repartidor "0..1" o-- "0..*" Comanda : reparteix
+Usuari "1" *-- "0..1" Compte : té
+Client "1" *-up- "0..*" Proposta : proposa
+Cuiner "0..*" -- "0..*" Proposta : accepta
+Proposta "1" *-up- "0..*" Xat : conté
+Plat "0..*" o-- "2..*" Ingredient : conté
+Ingredient "0..*" o-- "0..*" Dieta : exclou
+Client "0..*" o-right- "0..*" Dieta : requereix
+Client "1" *-up- "0..*" Valoració : qualifica
+Cuiner "1" o-left- "0..*" Valoració : valora
+Plat "1" -up- "1" Valoració : valora
+Comanda "1" -- "1" Valoració : valora
+
+'Client --- GComanda : control
+'GComanda -- IComanda : boundary
+'"Usuari no registrat" -- GSessió : control
+'GSessió -- ISessió : boundary
+'Xat -- GXat : control
+'GXat -- IXat : boundary
+'Valoració -- GValoració : control
+'GValoració -- IValoració : boundary
+'Proposta -- GProposta : control
+'GProposta -- IProposta : boundary

@@ -1,0 +1,43 @@
+'Params
+  title Consultar historial
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Client as CLI
+  boundary Interfaç as I
+  control Gestor as G
+  entity Plat as PL
+  entity Perfil as P
+  entity Comanda as C
+
+'Seqüència
+  CLI -> I : consultarHistorial()
+  I -> G : consultarHistorial()
+loop for plat in comandes
+  G -> C : getPlats()
+end
+  G -> I : mostrarPlats()
+opt Veure informació
+  CLI -> I : consultarPlat()
+  I -> G : consultarPlat()
+  G -> C : getInformació()
+  G -> I : mostrarInformació()
+end
+opt Escollir plat
+  CLI -> I : seleccionarPlat()
+  I -> G : seleccionarPlat()
+  G -> PL : comprovarPlat()
+opt Ítem no disponible
+  G -> I : mostrarError()
+end
+  G -> P : comprovarPerfil()
+opt Advertència ítem
+  G -> I : mostrarAdvertència()
+end
+  G -> C : afegirPlat()
+end

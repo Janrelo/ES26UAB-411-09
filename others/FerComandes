@@ -1,0 +1,81 @@
+'Params
+  title Fer comandes
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Client as CLI
+  boundary Interfaç as I
+  control Gestor as G
+  entity Comanda as C
+  entity Cuiner as CUI
+  entity Repartidor as REP
+  entity Compte as CC
+  entity Historial as H
+
+'Seqüència
+  CLI -> I : ferComanda()
+  I -> G : ferComanda()
+loop for comanda.pendent in comandes
+  G -> C : getEstat()
+break if numPendents >= 3
+  G -> I : mostrarError()
+end
+end
+loop for plat in comanda
+  G -> C : getPlats()
+end
+  G -> I : mostrarPlats()
+  G -> I : demanarConfirmació()
+alt Continuar amb la comanda
+  CLI -> I : confirmarOperació()
+else Cancel·lar operació
+  CLI -> I : acabarOperació()
+end
+  I -> G : ferComanda()
+  G -> CUI : getDisponibilitat()
+opt Cuiner no disponible
+  G -> I : demanarConfirmació()
+alt Reservar comanda
+  CLI -> I : confirmarOperació()
+  I -> G : getConfirmació()
+else Cancel·lar operació
+  CLI -> I : acabarOperació()
+end
+end
+  G -> I : demanarPagament()
+  CLI -> I : pagarComanda()
+  I -> G : validarInformació()
+opt Dades no vàlides
+  G -> I : mostrarError()
+alt Reinserir dades
+  CLI -> I : pagarComanda()
+  I -> G : validarInformació()
+else Cancel·lar operació
+  CLI -> I : acabarOperació()
+end
+end
+  G -> I : demanarRecollida()
+  CLI -> I : seleccionarRecollida()
+  I -> G : getRecollida()
+  G -> C : actualitzarComanda()
+  G -> H : guardarComanda()
+
+opt Recollida pel repartidor
+  G -> REP : encarregarRepartidor()
+  G -> REP : ingressarRepartidor()
+end
+alt Reservar comanda
+  G -> CUI : reservarComanda()
+  ...
+  CUI -> G : acceptarComanda()
+else Encarregar comanda
+  G -> CUI : encarregarComanda()
+end
+  G -> CUI : ingressarCuiner()
+  G -> CC : afegirPunts()
+  G -> I : mostrarPunts()

@@ -1,0 +1,23 @@
+'Params
+  title Seleccionar plat
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Client as CLI
+  boundary Interfaç as I
+  control Gestor as G
+  entity Comanda as C
+
+'Seqüència
+alt Seleccionar plat
+  CLI -> I : inclourePlat()
+else Modificar recepta
+  CLI -> I : canviarRecepta()
+end
+  I -> G : afegirPlat()
+  G -> C : afegirPlat()

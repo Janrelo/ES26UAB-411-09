@@ -1,0 +1,42 @@
+'Params
+  title Consultar menús
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor "Usuari no Registrat" as U
+  boundary Interfaç as I
+  control Gestor as G
+  entity Cuiner as C
+  entity Plat as P
+  entity Usuari as USR
+
+'Seqüència
+  U -> I : veureMenús()
+  I -> G : obtenirMenús()
+  G -> USR : obtenirDades()
+loop filtrar cuiners i plats
+  G -> C : obtenirCuiners()
+  G -> P : obtenirPlats()
+end
+  G -> I : mostrarMenús()
+opt Cercar menús
+  U -> I : cercarMenús()
+  I -> G : obtenirMenús()
+  G -> USR : obtenirDades()
+loop filtrar cuiners i plats
+  G -> C : obtenirCuiners()
+  G -> P : obtenirPlats()
+end
+  G -> I : mostrarMenús()
+end
+opt Informació menús
+  U -> I : consultarPlat()
+  I -> G : consultarPlat()
+  G -> P : getInformació()
+  G -> I : mostrarInformació()
+end

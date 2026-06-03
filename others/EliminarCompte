@@ -1,0 +1,27 @@
+'Params
+  title Eliminar compte
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Usuari as U
+  boundary Interfaç as I
+  control Gestor as G
+  entity Perfil as P
+  entity Perfil as P
+
+'Seqüència
+  U -> I : donarBaixa()
+  I -> G : donarBaixa()
+  G -> I : demanarConfirmació()
+alt Confirmar
+  U -> I : confirmarOperació()
+  I -> G : esborrarPerfil()
+  G -> P : esborrarPerfil()
+else Cancel·lar
+  U -> I : cancel·larOperació()
+end

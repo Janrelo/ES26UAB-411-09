@@ -1,0 +1,50 @@
+'Params
+  title Modificar perfil
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Usuari as U
+  boundary Interfaç as I
+  control Gestor as G
+  entity Perfil as P
+
+'Seqüència
+  U -> I : consultarPerfil()
+  I -> G : consultarPerfil()
+loop for dades in perfil
+  G -> P : getDades()
+end
+  G -> I : mostrarDades()
+opt Canviar adreça
+  U -> I : canviarAdreça()
+  I -> G : canviarAdreça()
+  G -> G : confirmarDades()
+opt Adreça incorrecta
+  G -> I : mostrarError()
+end
+end
+opt Canviar restriccions
+  U -> I : canviarRestriccions()
+  I -> G : canviarRestriccions()
+end
+opt Canviar vista
+  U -> I : canviarVista()
+  I -> G : canviarVista()
+end
+opt Canviar rols
+  U -> I : canviarRols()
+  I -> G : permísOperació()
+  G -> I : demanarConfirmació()
+alt Confirmar
+  U -> I : confirmarOperació()
+  I -> G : canviarRols()
+else Cancel·lar
+  U -> I : cancel·larOperació()
+end
+end
+  G -> P : actualitzarDades()

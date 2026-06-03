@@ -1,0 +1,29 @@
+'Params
+  title Veure propostes
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Cuiner as CUI
+  boundary Interfaç as I
+  control Gestor as G
+  entity Proposta as P
+  entity Xat as X
+
+'Seqüència
+  CUI -> I : veurePropostes()
+  I -> G : veurePropostes()
+loop for proposta in propostes
+  G -> P : getProposta()
+end
+  G -> I : mostrarPropostes()
+opt Acceptar proposta
+  CUI -> I : acceptarProposta()
+  I -> G : acceptarProposta()
+  G -> P : assignarCuiner()
+  G -> X : crearXat()
+end

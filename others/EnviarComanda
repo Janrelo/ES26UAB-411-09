@@ -1,0 +1,55 @@
+'Params
+  title Enviar comanda & Veure ubicació
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Repartidor as REP
+  actor Client as CLI
+  boundary Interfaç as I
+  control Gestor as G
+  actor Cuiner as CUI
+
+'Seqüència
+alt Client recull
+group recollida
+  CLI -> I : recollirComanda()
+  I -> G : getAdreça()
+  G -> CUI : getAdreça()
+  G -> I : mostrarAdreça()
+  ...
+  CLI -> I : finalitzarRecollida()
+end
+  I -> G : finalitzarComanda()
+
+else Repartidor recull
+  REP -> I : compartirUbicació()
+  I -> G : compartirUbicació()
+
+group recollida
+  REP -> I : recollirComanda()
+  I -> G : getAdreça()
+  G -> CUI : getAdreça()
+  G -> I : mostrarAdreça()
+  ...
+  REP -> I : finalitzarRecollida()
+end
+  I -> G : getAdreça()
+  G -> CLI : getAdreça()
+  G -> I : mostrarAdreça()
+  ...
+group seguiment
+  CLI -> I : veureUbicació()
+  I -> G : getMapa()
+  G -> I : mostrarMapa()
+  G -> I : mostrarUbicació()
+end
+  ...
+  REP -> I : finalitzarComanda()
+  I -> G : acabarCompartir()
+  I -> G : finalitzarComanda()
+end

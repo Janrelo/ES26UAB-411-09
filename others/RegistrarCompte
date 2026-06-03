@@ -1,0 +1,38 @@
+'Params
+  title Registrar compte
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor "Usuari no registrat" as NON
+  boundary Interfaç as I
+  control Gestor as G
+  entity Usuari as U
+
+'Seqüència
+  NON -> I : crearCompte()
+  I -> G : iniciarOperació()
+  G -> I : demanarDades()
+  NON -> I : entrarDades()
+  I -> G : validarDades()
+loop for usuari in usuaris
+  G -> U : validarNom()
+end
+  G -> G : validarContrasenya()
+alt dades vàlides
+  G -> U : registrarUsuari()
+  G -> U : actualitzarPerfil()
+  G -> I : mostrarMenú()
+else dades no vàlides
+  G -> I : mostrarError()
+alt reinserir dades
+  NON -> I : entrarDades()
+  ...
+else cancel·lar operació
+  NON -> I : acabarOperació()
+end
+end

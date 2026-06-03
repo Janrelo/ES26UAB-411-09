@@ -1,0 +1,36 @@
+'Params
+  title Valorar comanda
+  skinparam backgroundColor transparent
+  skinparam actorStyle Hollow
+  skinparam actorBackgroundColor business
+  skinparam boundaryBackgroundColor business
+  skinparam controlBackgroundColor business
+  skinparam entityBackgroundColor business
+
+'Participants
+  actor Client as CLI
+  boundary Interfaç as I
+  control Gestor as G
+  entity Comanda as C
+  entity Valoració as V
+
+'Seqüència
+  CLI -> I : seleccionarComanda()
+  I -> G : confirmarComanda()
+  G -> C : confirmarComanda()
+opt Comanda valorada
+  G -> I : mostrarError()
+end
+  G -> I : demanarDades()
+  CLI -> I : entrarDades()
+  I -> G : entrarDades()
+  G -> G : confirmarDades()
+opt Informació incompleta
+  G -> I : mostrarError()
+loop while incorrecte
+  CLI -> I : entrarDades()
+  I -> G : entrarDades()
+  G -> G : confirmarDades()
+end
+end
+  G -> V : setValoració()
