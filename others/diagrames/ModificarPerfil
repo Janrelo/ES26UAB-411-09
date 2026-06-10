@@ -15,36 +15,64 @@
 
 'Seqüència
   U -> I : consultarPerfil()
+  activate I
   I -> G : consultarPerfil()
+  deactivate I
+  activate G
 loop for dades in perfil
   G -> P : getDades()
+  activate P
+  P -> G : <<return>>
+  deactivate P
 end
   G -> I : mostrarDades()
+  deactivate G
+
+opt Canviar rols
+  U -> I : canviarRols()
+  activate I
+  I -> G : permísOperació()
+  deactivate I
+  activate G
+  G -> I : demanarConfirmació()
+  activate I
+alt Confirmar
+  U -> I : confirmarOperació()
+  I -> G : canviarRols()
+  deactivate I
+else Cancel·lar
+  U -> I : cancel·larOperació()
+  activate I
+  I -> G : cancel·larOperació()
+  deactivate I
+  destroy G
+end
+end
+
 opt Canviar adreça
   U -> I : canviarAdreça()
+  activate I
   I -> G : canviarAdreça()
+  deactivate I
+  activate G
   G -> G : confirmarDades()
 opt Adreça incorrecta
   G -> I : mostrarError()
+  destroy G
 end
 end
 opt Canviar restriccions
   U -> I : canviarRestriccions()
+  activate I
   I -> G : canviarRestriccions()
+  deactivate I
+  activate G
 end
 opt Canviar vista
   U -> I : canviarVista()
+  activate I
   I -> G : canviarVista()
-end
-opt Canviar rols
-  U -> I : canviarRols()
-  I -> G : permísOperació()
-  G -> I : demanarConfirmació()
-alt Confirmar
-  U -> I : confirmarOperació()
-  I -> G : canviarRols()
-else Cancel·lar
-  U -> I : cancel·larOperació()
-end
+  deactivate I
 end
   G -> P : actualitzarDades()
+  deactivate G
