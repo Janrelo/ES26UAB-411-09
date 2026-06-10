@@ -11,13 +11,37 @@
   actor Client as CLI
   boundary Interfaç as I
   control Gestor as G
+  entity Plat as P
   entity Comanda as C
 
 'Seqüència
 alt Seleccionar plat
   CLI -> I : inclourePlat()
+  activate I
+  I -> G : inclourePlat()
+  deactivate I
+  activate G
+  G -> P : getPlat()
+  activate P
+  P -> G : <<return>>
+  deactivate P
+
 else Modificar recepta
   CLI -> I : canviarRecepta()
+  activate I
+  I -> G : canviarRecepta()
+  deactivate I
+  G -> P : getPlat()
+  activate P
+  P -> G : <<return>>
+  deactivate P
+  G -> I : demanarDades()
+  activate I
+  CLI -> I : entrarDades()
+  I -> G : entrarDades()
+  deactivate I
+  G -> G : modificarPlat()
 end
-  I -> G : afegirPlat()
+
   G -> C : afegirPlat()
+  deactivate G
