@@ -16,12 +16,26 @@
 
 'Seqüència
   U -> I : donarBaixa()
+  activate I
   I -> G : donarBaixa()
+  deactivate I
+  activate G
   G -> I : demanarConfirmació()
+  activate I
 alt Confirmar
   U -> I : confirmarOperació()
   I -> G : esborrarPerfil()
+  deactivate I
   G -> P : esborrarPerfil()
+  deactivate G
+  activate P
+  P -> P : esborrarPerfil()
+  deactivate P
 else Cancel·lar
   U -> I : cancel·larOperació()
+  activate I
+  activate G
+  I -> G : cancel·larOperació()
+  deactivate I
+  destroy G
 end
