@@ -16,21 +16,37 @@
 
 'Seqüència
   CLI -> I : seleccionarComanda()
+  activate I
   I -> G : confirmarComanda()
+  deactivate I
+  activate G
   G -> C : confirmarComanda()
+  activate C
+  C -> G : <<return>>
+  deactivate C
 opt Comanda valorada
   G -> I : mostrarError()
+  destroy G
 end
   G -> I : demanarDades()
+  activate G
+  activate I
   CLI -> I : entrarDades()
   I -> G : entrarDades()
+  deactivate I
   G -> G : confirmarDades()
 opt Informació incompleta
   G -> I : mostrarError()
 loop while incorrecte
   CLI -> I : entrarDades()
+  activate I
   I -> G : entrarDades()
+  deactivate I
   G -> G : confirmarDades()
 end
 end
   G -> V : setValoració()
+  deactivate G
+  activate V
+  V -> V : setValoració()
+  deactivate V
