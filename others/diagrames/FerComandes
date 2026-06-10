@@ -15,67 +15,137 @@
   entity Cuiner as CUI
   entity Repartidor as REP
   entity Compte as CC
-  entity Historial as H
 
 'Seqüència
   CLI -> I : ferComanda()
+  activate I
   I -> G : ferComanda()
+  deactivate I
+  activate G
 loop for comanda.pendent in comandes
   G -> C : getEstat()
+  activate C
+  C -> G : <<return>>
+  deactivate C
 break if numPendents >= 3
   G -> I : mostrarError()
+  destroy G
 end
 end
 loop for plat in comanda
   G -> C : getPlats()
+  activate G
+  activate C
+  C -> G : <<return>>
+  deactivate C
 end
   G -> I : mostrarPlats()
   G -> I : demanarConfirmació()
-alt Continuar amb la comanda
-  CLI -> I : confirmarOperació()
-else Cancel·lar operació
-  CLI -> I : acabarOperació()
-end
-  I -> G : ferComanda()
-  G -> CUI : getDisponibilitat()
-opt Cuiner no disponible
-  G -> I : demanarConfirmació()
+  activate I
+
 alt Reservar comanda
   CLI -> I : confirmarOperació()
   I -> G : getConfirmació()
+  deactivate I
 else Cancel·lar operació
   CLI -> I : acabarOperació()
+  activate I
+  I -> G : acabarOperació()
+  deactivate I
+  destroy G
+end
+
+  G -> CUI : getDisponibilitat()
+  activate G
+  activate CUI
+  CUI -> G : <<return>>
+  deactivate CUI
+opt Cuiner no disponible
+  G -> I : demanarConfirmació()
+  activate I
+alt Reservar comanda
+  CLI -> I : confirmarOperació()
+  I -> G : confirmarOperació()
+  deactivate I
+else Cancel·lar operació
+  CLI -> I : acabarOperació()
+  activate I
+  I -> G : acabarOperació()
+  deactivate I
+  destroy G
 end
 end
   G -> I : demanarPagament()
+  activate I
+  activate G
   CLI -> I : pagarComanda()
   I -> G : validarInformació()
+  deactivate I
 opt Dades no vàlides
   G -> I : mostrarError()
 alt Reinserir dades
   CLI -> I : pagarComanda()
+  activate I
   I -> G : validarInformació()
+  deactivate I
 else Cancel·lar operació
   CLI -> I : acabarOperació()
+  activate I
+  I -> G : acabarOperació()
+  deactivate I
+  destroy G
 end
 end
   G -> I : demanarRecollida()
+  activate G
+  activate I
   CLI -> I : seleccionarRecollida()
   I -> G : getRecollida()
+  deactivate I
   G -> C : actualitzarComanda()
-  G -> H : guardarComanda()
+  activate C
+  C -> C : actualitzarComanda()
+  deactivate C
+  G -> C : guardarComanda()
+  activate C
+  C -> C : guardarComanda()
+  deactivate C
 
 opt Recollida pel repartidor
   G -> REP : encarregarRepartidor()
-  G -> REP : ingressarRepartidor()
+  activate REP
+  REP -> REP : encarregarRepartidor()
+  deactivate REP
+  G -> CC : ingressarRepartidor()
+  activate CC
+  CC -> CC : ingressarRepartidor()
+  deactivate CC
 end
 alt Reservar comanda
   G -> CUI : reservarComanda()
+  deactivate G
+  activate CUI
+  CUI -> CUI : reservarComanda()
+  deactivate CUI
   ...
-  CUI -> G : acceptarComanda()
+  CUI -> I : acceptarComanda()
+  activate I
+  I -> G : acceptarComanda()
+  deactivate I
+  activate G
 else Encarregar comanda
   G -> CUI : encarregarComanda()
+  activate CUI
+  CUI -> CUI : encarregarComanda()
+  deactivate CUI
 end
-  G -> CUI : ingressarCuiner()
+  G -> CC : ingressarCuiner()
+  activate CC
+  CC -> CC : ingressarCuiner()
+  deactivate CC
   G -> CC : afegirPunts()
+  activate CC
+  CC -> CC : afegirPunts()
+  deactivate CC
   G -> I : mostrarPunts()
+  deactivate G
