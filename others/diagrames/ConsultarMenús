@@ -17,26 +17,58 @@
 
 'Seqüència
   U -> I : veureMenús()
+  activate I
   I -> G : obtenirMenús()
+  deactivate I
+  activate G
   G -> USR : obtenirDades()
+  activate USR
+  USR -> G : <<return>>
+  deactivate USR
 loop filtrar cuiners i plats
   G -> C : obtenirCuiners()
+  activate C
+  C -> G : <<return>>
+  deactivate C
   G -> P : obtenirPlats()
+  activate P
+  P -> G : <<return>>
+  deactivate P
 end
   G -> I : mostrarMenús()
+  deactivate G
 opt Cercar menús
   U -> I : cercarMenús()
+  activate I
   I -> G : obtenirMenús()
+  deactivate I
+  activate G
   G -> USR : obtenirDades()
+  activate USR
+  USR -> G : <<return>>
+  deactivate USR
 loop filtrar cuiners i plats
   G -> C : obtenirCuiners()
+  activate C
+  C -> G : <<return>>
+  deactivate C
   G -> P : obtenirPlats()
+  activate P
+  P -> G : <<return>>
+  deactivate P
 end
   G -> I : mostrarMenús()
+  deactivate G
 end
 opt Informació menús
   U -> I : consultarPlat()
+  activate I
   I -> G : consultarPlat()
+  deactivate I
+  activate G
   G -> P : getInformació()
+  activate P
+  P -> G : <<return>>
+  deactivate P
   G -> I : mostrarInformació()
 end
