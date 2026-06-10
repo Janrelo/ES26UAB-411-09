@@ -15,19 +15,35 @@
 
 'Seqüència
   NON -> I : iniciarSessió()
+  activate I
   I -> G : iniciarOperació()
+  deactivate I
+  activate G
   G -> I : demanarDades()
+  activate I
   NON -> I : entrarDades()
   I -> G : validarDades()
+  deactivate I
+
 alt dades vàlides
-  G -> U : iniciarSessió()
+  G -> U : entrarSessió()
+  activate U
+  U -> U : entrarSessió()
+  deactivate U
   G -> I : mostrarMenú()
+  deactivate G
 else dades no vàlides
   G -> I : mostrarError()
+  activate G
+
 alt reinserir dades
-  NON -> I : entrarDades()
+  NON -> I : iniciarSessió()
   ...
 else cancel·lar operació
   NON -> I : acabarOperació()
+  activate I
+  I -> G : acabarOperació()
+  deactivate I
 end
+
 end
