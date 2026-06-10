@@ -18,38 +18,67 @@
 alt Client recull
 group recollida
   CLI -> I : recollirComanda()
+  activate I
   I -> G : getAdreça()
+  deactivate I
+  activate G
   G -> CUI : getAdreça()
+  activate CUI
+  CUI -> G : <<return>>
+  deactivate CUI
   G -> I : mostrarAdreça()
   ...
   CLI -> I : finalitzarRecollida()
+  activate I
 end
   I -> G : finalitzarComanda()
+  deactivate I
+  deactivate G
 
 else Repartidor recull
   REP -> I : compartirUbicació()
+  activate I
   I -> G : compartirUbicació()
+  deactivate I
+  activate G
+  G -> G : compartirUbicació()
 
 group recollida
   REP -> I : recollirComanda()
+  activate I
   I -> G : getAdreça()
+  deactivate I
   G -> CUI : getAdreça()
+  activate CUI
+  CUI -> G : <<return>>
+  deactivate CUI
   G -> I : mostrarAdreça()
   ...
   REP -> I : finalitzarRecollida()
+  activate I
 end
   I -> G : getAdreça()
+  deactivate I
   G -> CLI : getAdreça()
+  activate CLI
+  CLI -> G : <<return>>
+  deactivate CLI
   G -> I : mostrarAdreça()
   ...
 group seguiment
   CLI -> I : veureUbicació()
+  activate I
   I -> G : getMapa()
+  deactivate I
+  G -> G : getMapa()
   G -> I : mostrarMapa()
   G -> I : mostrarUbicació()
 end
   ...
   REP -> I : finalitzarComanda()
-  I -> G : acabarCompartir()
+  activate I
   I -> G : finalitzarComanda()
+  deactivate I
+  G -> G : acabarCompartir()
+  deactivate G
 end
