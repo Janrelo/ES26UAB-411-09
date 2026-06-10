@@ -6,6 +6,7 @@
   skinparam boundaryBackgroundColor business
   skinparam controlBackgroundColor business
   skinparam entityBackgroundColor business
+  skinparam activateBackgroundColor business
 
 'Participants
   actor "Usuari no registrat" as NON
@@ -15,24 +16,44 @@
 
 'Seqüència
   NON -> I : crearCompte()
+  activate I
   I -> G : iniciarOperació()
+  deactivate I
+  activate G
   G -> I : demanarDades()
+  activate I
   NON -> I : entrarDades()
   I -> G : validarDades()
+  deactivate I
 loop for usuari in usuaris
   G -> U : validarNom()
+  activate U
+  U -> G : <<return>>
+  deactivate U
 end
   G -> G : validarContrasenya()
 alt dades vàlides
   G -> U : registrarUsuari()
+  activate U
+  U -> U : registrarUsuari()
+  deactivate U
   G -> U : actualitzarPerfil()
+  activate U
+  U -> U : actualitzarPerfil()
+  deactivate U
   G -> I : mostrarMenú()
+  deactivate G
 else dades no vàlides
   G -> I : mostrarError()
+  activate G
 alt reinserir dades
   NON -> I : entrarDades()
   ...
 else cancel·lar operació
   NON -> I : acabarOperació()
+  activate I
+  I -> G : acabarOperació()
+  deactivate I
+  destroy G
 end
 end
