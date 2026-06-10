@@ -17,27 +17,58 @@
 
 'Seqüència
   CLI -> I : consultarHistorial()
+  activate I
   I -> G : consultarHistorial()
+  deactivate I
+  activate G
 loop for plat in comandes
   G -> C : getPlats()
+  activate C
+  C -> G : <<return>>
+  deactivate C
 end
   G -> I : mostrarPlats()
+  deactivate G
 opt Veure informació
   CLI -> I : consultarPlat()
+  activate I
   I -> G : consultarPlat()
+  deactivate I
+  activate G
   G -> C : getInformació()
+  activate C
+  C -> G : <<return>>
+  deactivate C
   G -> I : mostrarInformació()
+  deactivate G
 end
 opt Escollir plat
   CLI -> I : seleccionarPlat()
+  activate I
   I -> G : seleccionarPlat()
-  G -> PL : comprovarPlat()
+  deactivate I
+  activate G
+  G -> PL : getPlat()
+  activate PL
+  PL -> G : <<return>>
+  deactivate PL
+  G -> G : comprovarPlat()
 opt Ítem no disponible
   G -> I : mostrarError()
+  destroy G
 end
-  G -> P : comprovarPerfil()
+  G -> PL : getPlat()
+  activate G
+  activate PL
+  PL -> G : <<return>>
+  deactivate PL
+  G -> G : comprovarPerfil()
 opt Advertència ítem
   G -> I : mostrarAdvertència()
 end
   G -> C : afegirPlat()
+  deactivate G
+  activate C
+  C -> C : afegirPlat()
+  deactivate C
 end
