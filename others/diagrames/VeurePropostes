@@ -1,5 +1,5 @@
 'Params
-  title Veure propostes
+  title Suggerir plats & Veure propostes
   skinparam backgroundColor transparent
   skinparam actorStyle Hollow
   skinparam actorBackgroundColor business
@@ -8,6 +8,7 @@
   skinparam entityBackgroundColor business
 
 'Participants
+  actor Client as CLI
   actor Cuiner as CUI
   boundary Interfaç as I
   control Gestor as G
@@ -15,15 +16,50 @@
   entity Xat as X
 
 'Seqüència
+  CLI -> I : descriurePlat()
+  activate I
+  I -> G : descriurePlat()
+  deactivate I
+  activate G
+  G -> G : confirmarDades()
+opt Informació incompleta
+  G -> I : mostrarError()
+loop while incorrecte
+  CLI -> I : descriurePlat()
+  activate I
+  I -> G : descriurePlat()
+  deactivate I
+  G -> G : confirmarDades()
+end
+end
+  G -> P : crearProposta()
+  deactivate G
+  ...
+
   CUI -> I : veurePropostes()
+  activate I
   I -> G : veurePropostes()
+  deactivate I
+  activate G
 loop for proposta in propostes
   G -> P : getProposta()
+  activate P
+  P -> G : <<return>>
+  deactivate P
 end
   G -> I : mostrarPropostes()
 opt Acceptar proposta
   CUI -> I : acceptarProposta()
+  activate I
   I -> G : acceptarProposta()
+  deactivate I
   G -> P : assignarCuiner()
+  activate P
+  P -> P : assignarCuiner()
+  deactivate P
   G -> X : crearXat()
+  deactivate G
+  activate X
+  X -> X : crearXat()
+  deactivate X
 end
