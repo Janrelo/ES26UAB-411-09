@@ -1,6 +1,6 @@
 'Params
   left to right direction
-  skinparam backgroundColor transparent
+  skinparam backgroundColor white
   skinparam actorFontSize 16
   skinparam defaultFontName Courier
   skinparam linetype polyline
@@ -27,7 +27,7 @@
   usecase "Consultar historial" as UC4
   usecase "Valorar comanda" as UC6
   usecase "Suggerir plats" as UC7
-  usecase "Pagar comanda" as UC10
+  usecase "Realitzar pagament" as UC10
   usecase "Reservar comanda" as UC16
   usecase "Canviar recepta" as UC17
   usecase "Seleccionar plat" as UC18
@@ -74,6 +74,7 @@
   UC3 ..> UC16 : extend
   CLI --> UC27
   CLI --> UC28
+  UC28 ..> UC10 : include
 'Usuari
   U --> UC5
   U --> UC11
