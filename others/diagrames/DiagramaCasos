@@ -33,6 +33,7 @@
   usecase "Seleccionar plat" as UC18
   usecase "Seleccionar recollida" as UC22
   usecase "Veure ubicació" as UC27
+  usecase "Subscriure pla" as UC28
 'Usuari
   usecase "Modificar perfil" as UC5
   usecase "Eliminar compte" as UC11
@@ -44,6 +45,7 @@
   usecase "Acceptar plats" as UC8
   usecase "Veure propostes" as UC20
   usecase "Acceptar propostes" as UC26
+  usecase "Oferir plat" as UC29
 'Repartidor
   usecase "Enviar comanda" as UC9
   usecase "Compartir ubicació" as UC25
@@ -51,8 +53,8 @@
 /'Relacions'/
 'Actors
   U --|> NON
-  CLI --|> U
-  CUI --|> U
+  CLI -d-|> U
+  CUI -u-|> U
   REP --|> U
 'Usuari no registrat
   NON --> UC1
@@ -62,8 +64,8 @@
   UC2 ..> UC23 : extend
 'Client
   CLI --> UC3
-  CLI --> UC4
-  CLI --> UC6
+  CLI -r-> UC4
+  CLI -l-> UC6
   CLI --> UC7
   UC3 ..> UC10 : include
   UC18 ..> UC17 : extend
@@ -71,6 +73,7 @@
   UC3 ..> UC22 : include
   UC3 ..> UC16 : extend
   CLI --> UC27
+  CLI --> UC28
 'Usuari
   U --> UC5
   U --> UC11
@@ -82,6 +85,7 @@
   CUI --> UC8
   CUI --> UC20
   UC20 ..> UC26 : extend
+  CUI --> UC29
 'Repartidor
   REP --> UC9
   UC9 ..> UC25 : include
